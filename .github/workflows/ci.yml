@@ -1,0 +1,76 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Run Test
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Common Setup
+        uses: ./.github/actions/setup-node-pnpm
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      # 静的テスト
+      - name: Run next lint
+        run: pnpm lint
+
+      - name: Run prettier --check
+        run: pnpm exec prettier src/ --check
+
+      - name: Run build
+        run: pnpm build
+
+      # 単体テスト
+      - name: Run vitest
+        run: pnpm run test-unit
+
+  test-e2e:
+    name: Run E2E Test
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Common Setup
+        uses: ./.github/actions/setup-node-pnpm
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Build Next.js app
+        run: pnpm run build
+
+      - name: Start Next.js app
+        run: pnpm dlx serve out -l 3000 &
+
+      - name: Wait for app to be ready
+        run: pnpm dlx wait-on http://localhost:3000
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        run: pnpm exec playwright test --project=chromium

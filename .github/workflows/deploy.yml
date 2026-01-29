@@ -1,0 +1,64 @@
+name: Deploy Next.js site to Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: next
+          generator_config_file: next.config.mjs
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Build and export static files
+        run: |
+          npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-slim
+    needs: build
+    timeout-minutes: 5
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
