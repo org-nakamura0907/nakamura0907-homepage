@@ -1,6 +1,7 @@
-import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import Footer from '@/components/footer';
+export { metadata } from '@/shared/config';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -12,11 +13,6 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'nakamura0907 homepage',
-  description: 'nakamura0907のポートフォリオサイト',
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,7 +21,13 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <main>{children}</main>
+        <div className="min-h-screen flex flex-col">
+          <header></header>
+          <div className="max-w-screen-xl mx-auto px-4 py-8 flex-grow flex flex-col w-full">
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
+        </div>
       </body>
     </html>
   );
