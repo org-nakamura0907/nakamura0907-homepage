@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Nagoya Event Portal',
-  description: 'Nagoya Event Portal',
+  title: 'nakamura0907 homepage',
+  description: 'nakamura0907のポートフォリオサイト',
 };
 
 export default function RootLayout({
