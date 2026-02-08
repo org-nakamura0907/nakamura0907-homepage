@@ -1,4 +1,4 @@
-import { Typography } from '@/shared/components/typography';
+import { Typography } from '@/shared/ui/typography';
 import { SITE_TITLE } from '@/shared/config';
 
 export default function Footer() {
