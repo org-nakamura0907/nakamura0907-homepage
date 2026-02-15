@@ -24,7 +24,7 @@ export default function Home() {
       </div>
 
       <div className="min-h-svh flex flex-col justify-center" ref={scrollNextRef}>
-        <div className="text-center">comming soon...</div>
+        <div className="text-center">coming soon...</div>
       </div>
     </>
   );
