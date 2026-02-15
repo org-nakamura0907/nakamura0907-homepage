@@ -1,8 +1,3 @@
-/**
- * Typographyコンポーネント
- * @see https://ui.shadcn.com/docs/components/radix/typography#p
- */
-
 import { ComponentProps } from 'react';
 import { cn } from '../lib/utils';
 
@@ -24,6 +19,10 @@ function TypographySmall({ className, ...props }: ComponentProps<'small'>) {
   return <small className={cn('text-sm leading-none font-medium', className)} {...props} />;
 }
 
+/**
+ * Typographyコンポーネント
+ * @see https://ui.shadcn.com/docs/components/radix/typography#p
+ */
 export const Typography = Object.assign(TypographyP, {
   H1: TypographyH1,
   Large: TypographyLarge,

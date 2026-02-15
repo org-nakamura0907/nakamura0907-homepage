@@ -16,6 +16,9 @@ interface DecryptedTextProps extends HTMLMotionProps<'span'> {
   animateOn?: 'view' | 'hover' | 'both';
 }
 
+/**
+ * @see https://reactbits.dev/text-animations/decrypted-text
+ */
 export default function DecryptedText({
   text,
   speed = 50,

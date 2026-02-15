@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div className="min-h-screen flex flex-col">
           <header></header>
-          <div className="max-w-screen-xl mx-auto px-4 py-8 flex-grow flex flex-col w-full">
+          <div className="max-w-screen-xl mx-auto flex-grow flex flex-col w-full">
             <main className="flex-grow">{children}</main>
             <Footer />
           </div>
